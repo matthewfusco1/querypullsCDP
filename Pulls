@@ -1,5 +1,7 @@
 Title: Subs Election Audience Section & Newsletter Signups 
 
+UC: Adam 
+
 Description: Subscribers who have signed up for 2 or more carta newsletters and 
 have viewed polticis section 1 times in the last 30 days 
 
@@ -17,4 +19,29 @@ WHERE
     AND tss.pvs_30_days = 1
     AND sub.dsd_status = 'A'
     AND sub.carta_enrollments_newsletters >= 2;
-______________________________________________________
+____________________________________________________________________________________
+
+Title: LN 31-60 Control Group 
+
+UC: Acquistion
+
+Description: 
+Pulling LN 31-60 Low Vs High Control group with specified Date Range 
+
+
+SELECT
+    CASE
+        WHEN activation_id = '407689' THEN 'Low Engaged'
+        WHEN activation_id = '407691' THEN 'High Engaged'
+        ELSE NULL
+    END AS Control_Group,
+    COUNT(*) AS Total_Count
+FROM "redshiftdefault"."public"."aiq_activation_history"
+WHERE dt BETWEEN 20240101 AND 20240125
+GROUP BY CASE
+        WHEN activation_id = '407689' THEN 'Low Engaged'
+        WHEN activation_id = '407691' THEN 'High Engaged'
+        ELSE NULL
+    END;
+____________________________________________________________________________________
+
