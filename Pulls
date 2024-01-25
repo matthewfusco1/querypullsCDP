@@ -45,3 +45,65 @@ GROUP BY CASE
     END;
 ____________________________________________________________________________________
 
+
+
+Title: Pulling Control_LE, Control_HE, Control_total, Send_he, Send_le, Send_total
+form LN 31-60 by date. 
+
+UC: LN 31-60 Used to update the dashboard chart 
+
+Descirption: 
+Use this query to pull all of the columns neede to show all start audiences over a certain period of time. This would be used within the retool query not redshift  
+
+SELECT
+    MIN(dt) AS dt,
+    COUNT(DISTINCT CASE WHEN activation_id = 407689 THEN c360_id END) AS control_le,
+    COUNT(DISTINCT CASE WHEN activation_id = 407691 THEN c360_id END) AS control_he,
+    COUNT(DISTINCT CASE WHEN activation_id IN (407689, 407691) THEN c360_id END) AS control_total,
+    COUNT(DISTINCT CASE WHEN activation_id = 407690 THEN c360_id END) AS send_le,
+    COUNT(DISTINCT CASE WHEN activation_id = 407693 THEN c360_id END) AS send_he,
+    COUNT(DISTINCT CASE WHEN activation_id IN (407690, 407693) THEN c360_id END) AS send_total
+FROM
+    "redshiftdefault"."public"."aiq_activation_history"
+WHERE
+    activation_id IN (407689, 407691, 407690, 407693)
+    AND dt BETWEEN '20240101' AND '20240125'
+GROUP BY
+    dt;
+
+
+Redshift query                                                                     
+
+SELECT DISTINCT *
+FROM "redshiftdefault"."public"."aiq_activation_history"
+WHERE dt BETWEEN '20240101' AND '20241025'
+  AND activation_id IN (407690, 407693, 407689, 407691);
+    |
+    |
+    |    
+
+Export CSV, Import CSV retool 
+
+    |
+    |
+    |
+
+Query in Retool 
+
+SELECT
+    MIN(dt) AS dt,
+    COUNT(DISTINCT CASE WHEN activation_id = 407689 THEN c360_id END) AS control_le,
+    COUNT(DISTINCT CASE WHEN activation_id = 407691 THEN c360_id END) AS control_he,
+    COUNT(DISTINCT CASE WHEN activation_id IN (407689, 407691) THEN c360_id END) AS control_total,
+    COUNT(DISTINCT CASE WHEN activation_id = 407690 THEN c360_id END) AS send_le,
+    COUNT(DISTINCT CASE WHEN activation_id = 407693 THEN c360_id END) AS send_he,
+    COUNT(DISTINCT CASE WHEN activation_id IN (407690, 407693) THEN c360_id END) AS send_total
+FROM
+    "redshiftdefault"."public"."aiq_activation_history"
+WHERE
+    activation_id IN (407689, 407691, 407690, 407693)
+    AND dt BETWEEN '20240101' AND '20240125'
+GROUP BY
+    dt;
+
+____________________________________________________________________________________
