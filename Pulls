@@ -1,0 +1,20 @@
+Title: Subs Election Audience Section & Newsletter Signups 
+
+Description: Subscribers who have signed up for 2 or more carta newsletters and 
+have viewed polticis section 1 times in the last 30 days 
+
+
+SELECT
+    COUNT(DISTINCT tss.c360_id) AS distinct_c360_ids
+FROM
+    "redshiftdefault"."public"."c360_topic_section_and_subsection" AS tss
+JOIN
+    "redshiftdefault"."public"."customer_360_subscriptions" AS sub
+ON
+    tss.c360_id = sub.c360_id
+WHERE
+    tss.topic_code = 'politics'
+    AND tss.pvs_30_days = 1
+    AND sub.dsd_status = 'A'
+    AND sub.carta_enrollments_newsletters >= 2;
+______________________________________________________
