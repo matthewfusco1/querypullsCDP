@@ -107,3 +107,58 @@ GROUP BY
     dt;
 
 ____________________________________________________________________________________
+TItle: Find starts on lN 31-60 by date for FTP and APD 
+
+UCL LN 31-60 
+
+Use this query on redshift 
+
+SELECT
+    digital.accessstartday,
+    digital.utm_campaign,
+    COUNT(DISTINCT digital.Subscriberidentity) AS total_people,
+    COUNT(DISTINCT CASE WHEN c360.dsd_workbench_marketing_details = 'FREE TO PAID' THEN digital.Subscriberidentity END) AS free_to_paid_count,
+    COUNT(DISTINCT CASE WHEN c360.dsd_subscription_classification = 'Active Paid Digital' THEN digital.Subscriberidentity END) AS active_paid_digital_count
+FROM
+    "redshiftdefault"."public"."digitalanalytics_subscriptions_startspaidcirculation" AS digital
+JOIN
+    "redshiftdefault"."public"."customer_360_subscriptions" AS c360
+ON
+    digital.Subscriberidentity = c360.subscriber_identity
+WHERE
+    digital.accessstartday BETWEEN '2024-01-02' and'2024-01-25'
+    AND digital.utm_campaign IN (
+        'LN3160-HE-Email1', 'LN3160-HE-Email2', 'LN3160-HE-Email3', 'LN3160-HE-Email4',
+        'LN3160-HE-Email5', 'LN3160-HE-Email6', 'LN3160-HE-Email7', 'LN3160-HE-Email8',
+        'LN3160-HE-Email9', 'LN3160-HE-Email10', 'LN3160-HE-Email11', 'LN3160-HE-Email12',
+        'LN3160-LE-Email1', 'LN3160-LE-Email2', 'LN3160-LE-Email3', 'LN3160-LE-Email4',
+        'LN3160-LE-Email5', 'LN3160-LE-Email6', 'LN3160-LE-Email7', 'LN3160-LE-Email8'
+    )
+GROUP BY
+    digital.accessstartday, digital.utm_campaign;
+
+export csv, import to retool then run this query on retool 
+
+SELECT
+    digital.accessstartday,
+    COUNT(DISTINCT digital.Subscriberidentity) AS total_people,
+    COUNT(DISTINCT CASE WHEN c360.dsd_workbench_marketing_details = 'FREE TO PAID' THEN digital.Subscriberidentity END) AS free_to_paid_count,
+    COUNT(DISTINCT CASE WHEN c360.dsd_subscription_classification = 'Active Paid Digital' THEN digital.Subscriberidentity END) AS active_paid_digital_count
+FROM
+    "redshiftdefault"."public"."digitalanalytics_subscriptions_startspaidcirculation" AS digital
+JOIN
+    "redshiftdefault"."public"."customer_360_subscriptions" AS c360
+ON
+    digital.Subscriberidentity = c360.subscriber_identity
+WHERE
+    digital.accessstartday BETWEEN '2024-01-02' AND '2024-01-25'
+    AND digital.utm_campaign IN (
+        'LN3160-HE-Email1', 'LN3160-HE-Email2', 'LN3160-HE-Email3', 'LN3160-HE-Email4',
+        'LN3160-HE-Email5', 'LN3160-HE-Email6', 'LN3160-HE-Email7', 'LN3160-HE-Email8',
+        'LN3160-HE-Email9', 'LN3160-HE-Email10', 'LN3160-HE-Email11', 'LN3160-HE-Email12',
+        'LN3160-LE-Email1', 'LN3160-LE-Email2', 'LN3160-LE-Email3', 'LN3160-LE-Email4',
+        'LN3160-LE-Email5', 'LN3160-LE-Email6', 'LN3160-LE-Email7', 'LN3160-LE-Email8'
+    )
+GROUP BY
+    digital.accessstartday;
+
