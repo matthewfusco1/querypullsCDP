@@ -162,3 +162,41 @@ WHERE
 GROUP BY
     digital.accessstartday;
 
+
+____________________________________________________________________________________
+
+
+WITH cte_total_subscribers AS (
+    SELECT
+        subscriber_identity,
+        COUNT(DISTINCT subscriber_identity) AS total_subscriber_identity
+    FROM
+        "redshiftdefault"."public"."customer_360_subscriptions"
+    WHERE
+        dsd_utm_campaign IN (
+            'LN3160-HE-Email1', 'LN3160-HE-Email2', 'LN3160-HE-Email3', 'LN3160-HE-Email4',
+            'LN3160-HE-Email5', 'LN3160-HE-Email6', 'LN3160-HE-Email7', 'LN3160-HE-Email8',
+            'LN3160-HE-Email9', 'LN3160-HE-Email10', 'LN3160-HE-Email11', 'LN3160-HE-Email12',
+            'LN3160-LE-Email1', 'LN3160-LE-Email2', 'LN3160-LE-Email3', 'LN3160-LE-Email4',
+            'LN3160-LE-Email5', 'LN3160-LE-Email6', 'LN3160-LE-Email7', 'LN3160-LE-Email8'
+        )
+    GROUP BY
+        subscriber_identity
+)
+
+SELECT
+    digital.accessstartday,
+    COUNT(DISTINCT cte.subscriber_identity) AS "Start Count"
+FROM
+    "redshiftdefault"."public"."digitalanalytics_subscriptions_startspaidcirculation" AS digital
+JOIN
+    cte_total_subscribers cte
+ON
+    digital.Subscriberidentity = cte.subscriber_identity
+WHERE
+    digital.accessstartday BETWEEN '2024-01-01' AND '2024-01-24'
+GROUP BY
+    digital.accessstartday
+ORDER BY
+    digital.accessstartday ASC;
+
