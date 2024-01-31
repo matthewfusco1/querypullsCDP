@@ -200,3 +200,21 @@ GROUP BY
 ORDER BY
     digital.accessstartday ASC;
 
+
+
+____________________________________________________________________________________
+
+
+Total number of active subscribers with email .gov or .mil 
+
+UC: Active Subs Military or Gov
+
+NOTES: You can find .edu by changing the id_email 
+
+SELECT COUNT(*)
+FROM "redshiftdefault"."public"."customer_360"
+WHERE dsd_status = 'A'
+AND (id_email LIKE '%.gov' OR id_email LIKE '%.mil');
+
+____________________________________________________________________________________
+
