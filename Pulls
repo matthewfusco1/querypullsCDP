@@ -218,3 +218,40 @@ AND (id_email LIKE '%.gov' OR id_email LIKE '%.mil');
 
 ____________________________________________________________________________________
 
+LN 31-60 Start Numbers but divided into low and high and categorized by c360_geo_strat 
+
+SELECT
+a.dt,
+    COUNT(DISTINCT CASE WHEN cg.c360_geo_strategy = 'EEA' THEN a.c360_id END) AS EEA,
+    COUNT(DISTINCT CASE WHEN cg.c360_geo_strategy = 'US' THEN a.c360_id END) AS US,
+    COUNT(DISTINCT CASE WHEN cg.c360_geo_strategy = 'Unknown' THEN a.c360_id END) AS Unknown,
+    COUNT(DISTINCT CASE WHEN cg.c360_geo_strategy = 'UK' THEN a.c360_id END) AS UK,
+    COUNT(DISTINCT CASE WHEN cg.c360_geo_strategy = 'CA' THEN a.c360_id END) AS CA,
+    COUNT(DISTINCT CASE WHEN cg.c360_geo_strategy = 'INTL' THEN a.c360_id END) AS INTL,
+    COUNT(DISTINCT CASE WHEN cg.c360_geo_strategy = 'AU' THEN a.c360_id END) AS AU,
+    COUNT(DISTINCT CASE WHEN cg.c360_geo_strategy = 'IN' THEN a.c360_id END) AS IN
+FROM
+    aiq_activation_history a
+JOIN
+    customer_360_geography cg ON a.c360_id = cg.c360_id
+WHERE
+    a.activation_id IN (407690, 407693)
+    AND a.dt BETWEEN '20231115' AND '20240212'
+
+group by a.dt
+
+
+
+____________________________________________________________________________________
+
+Panera Free Trail Start Audience 
+
+SELECT *
+FROM Customer_360
+WHERE dsd_promotion_code = '0823_panera_26w_trial'
+AND (id_email IS NOT NULL AND id_email <> '')
+AND dsd_expiration_date BETWEEN CURRENT_DATE AND (CURRENT_DATE + INTERVAL '14 days')
+AND dsd_status = 'A'
+and dsd_curr_tbl_rate = '0.0'
+
+____________________________________________________________________________________
