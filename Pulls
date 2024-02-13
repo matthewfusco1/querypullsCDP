@@ -255,3 +255,19 @@ AND dsd_status = 'A'
 and dsd_curr_tbl_rate = '0.0'
 
 ____________________________________________________________________________________
+
+Number of People who have x amount of pageviews in 30 days based on section 
+
+SELECT
+    COUNT(DISTINCT tss.c360_id) AS total_count_of_c360_ids,
+    AVG(tss.pvs_30_days) AS average_pv_30_days
+FROM
+    "redshiftdefault"."public"."c360_topic_section_and_subsection" AS tss
+JOIN
+    "redshiftdefault"."public"."customer_360" AS sub
+ON
+    tss.c360_id = sub.c360_id
+WHERE
+    tss.topic_name LIKE '%politics%'
+    AND sub.dsd_status IN ('NULL', 'T');
+
