@@ -271,3 +271,23 @@ WHERE
     tss.topic_name LIKE '%politics%'
     AND sub.dsd_status IN ('NULL', 'T');
 
+
+____________________________________________________________________________________
+
+Price Uplift 
+
+Criteria
+- USD, US subscribers only
+- Currently on a discounted rate (less than $12)
+- Month on book 11, 12 or 13 (three separate lists for each MOB would suffice if we can’t sort by MOB)
+- Subs ALL ACCESS
+
+
+SELECT COUNT(c360.c360_id) AS total_count
+FROM customer_360 AS c360
+JOIN customer_360_geography AS geo ON c360.c360_id = geo.c360_id
+WHERE c360.dsd_curr_tbl_rate > 12
+AND c360.dsd_status = 'A'
+AND c360.dsd_start_date BETWEEN '2022-05-01 00:00:00' AND '2022-05-31 23:99:99'
+AND geo.c360_geo_strategy = 'US'
+AND dsd_product_id = 'AllACCESS';
