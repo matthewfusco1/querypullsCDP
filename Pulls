@@ -286,8 +286,10 @@ Criteria
 SELECT COUNT(c360.c360_id) AS total_count
 FROM customer_360 AS c360
 JOIN customer_360_geography AS geo ON c360.c360_id = geo.c360_id
-WHERE c360.dsd_curr_tbl_rate > 12
+WHERE c360.dsd_curr_tbl_rate < 12
 AND c360.dsd_status = 'A'
-AND c360.dsd_start_date BETWEEN '2022-05-01 00:00:00' AND '2022-05-31 23:99:99'
+AND c360.dsd_start_date BETWEEN '2022-03-01 00:00:00' AND '2022-03-31 23:99:99'
+AND c360.dsd_curr_tbl_currency_code = 'USD'
 AND geo.c360_geo_strategy = 'US'
-AND dsd_product_id = 'AllACCESS';
+AND dsd_product_id = 'BASIC'
+AND dsd_workbench_product_type = 'Basic-Monthly'
