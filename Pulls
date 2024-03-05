@@ -293,3 +293,16 @@ AND c360.dsd_curr_tbl_currency_code = 'USD'
 AND geo.c360_geo_strategy = 'US'
 AND dsd_product_id = 'BASIC'
 AND dsd_workbench_product_type = 'Basic-Monthly'
+
+
+____________________________________________________________________________________
+
+
+Subscribers in the local dmv area 
+
+SELECT COUNT(c1.c360_id)
+FROM customer_360_geography c1
+INNER JOIN customer_360 c2 ON c1.c360_id = c2.c360_id
+WHERE c1.c360_geo_category = 'United States (DC Local)'
+AND c2.dsd_status = 'A';
+
