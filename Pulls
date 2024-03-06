@@ -306,3 +306,12 @@ INNER JOIN customer_360 c2 ON c1.c360_id = c2.c360_id
 WHERE c1.c360_geo_category = 'United States (DC Local)'
 AND c2.dsd_status = 'A';
 
+
+____________________________________________________________________________________
+
+
+Find the number of users most recently app open date (over ios and andriod) 
+
+SELECT count (c360_id)
+FROM "redshiftdefault"."public"."customer_360_google_analytics"
+Where ga_most_recent_classic_app_visit_date = '2024-03-04' <<-- Insert date here 
